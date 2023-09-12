@@ -1,4 +1,5 @@
 import React from "react";
+import Link from 'next/link'
 import Blog from '@/Components/Blog'
 
 const page = () => {

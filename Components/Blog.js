@@ -1,10 +1,11 @@
 import React from "react";
 
+
 const blog = () => {
   return (
     <>
       <h1 className="leading-7 text-4xl font-semibold ">Latest Blogs</h1>
-      <div className="mt-10 text-center leading-5 flex justify-evenly items-center flex-col">
+      <div className="mt-10 text-center leading-5 flex justify-evenly items-center sm:flex-col lg:flex-row md:flex-col">
         <div className="my-10 flex justify-center items-center flex-col">
           <img
             src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
