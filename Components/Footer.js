@@ -1,10 +1,11 @@
 import React from "react";
 
+
 const Footer = () => {
   return (
     <>
-      <div className="bg-black text-white h-48 w-full flex  justify-around items-center sm:flex-col lg:flex-row md:flex-col">
-        <div className=" flex justify-between items-center gap-5 text-xl font-semibold">
+      <div className="bg-black text-white h-auto w-full flex  justify-between items-center flex-col gap-10">
+        <div className=" flex justify-between flex-col mt-10 items-center gap-5 text-xl font-semibold">
           <ul>
             <li>hello</li>
             <li>hello</li>
@@ -32,7 +33,7 @@ const Footer = () => {
             className="rounded border-2 px-2 py-2"
           />
           <br />
-          <button className="rounded px-3 py-2 leading-3 text-black bg-white hover:bg-green-700">subscribe now!</button>
+          <button className="mb-10 rounded px-3 py-2 leading-3 text-black bg-white hover:bg-green-700">subscribe now!</button>
         </div>
         
       </div>
