@@ -15,7 +15,7 @@ const page = () => {
               await fetch('https://localhost:4000/Register', {
                 method: 'POST',
                 body: JSON.stringify({Email, Password}),
-                headers: {'Content-Type':'application/json'}
+                headers: {'Content-Type':'application/json'},
 
               })
             }}>
