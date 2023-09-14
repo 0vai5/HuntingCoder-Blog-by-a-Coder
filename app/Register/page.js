@@ -10,7 +10,15 @@ const page = () => {
       <div className="container text-center left-4 relative ">
         <div className="my-20 "></div>
         <h1 className="font-bold text-4xl mb-5">Register</h1>
-        <form>
+        <form onSubmit={async (e) => {
+              e.preventDefault();
+              await fetch('https://localhost:4000/Register', {
+                method: 'POST',
+                body: JSON.stringify({Email, Password}),
+                headers: {'Content-Type':'application/json'}
+
+              })
+            }}>
           <label className="relative right-28 font-semibold text-lg">
             Email
           </label>
@@ -42,9 +50,7 @@ const page = () => {
           <br />
           <button
             className="hover:bg-gray-700 bg-black mb-5 mt-10 text-white rounded-md px-7 py-3 mx-2"
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
+            
           >
             Register
           </button>
