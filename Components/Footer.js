@@ -5,23 +5,7 @@ const Footer = () => {
   return (
     <>
       <div className="bg-black text-white h-auto w-full flex  justify-between items-center flex-col gap-10">
-        <div className=" flex justify-between flex-col mt-10 items-center gap-5 text-xl font-semibold">
-          <ul>
-            <li>hello</li>
-            <li>hello</li>
-            <li>hello</li>
-          </ul>
-          <ul>
-            <li>hello</li>
-            <li>hello</li>
-            <li>hello</li>
-          </ul>
-          <ul>
-            <li>hello</li>
-            <li>hello</li>
-            <li>hello</li>
-          </ul>
-        </div>
+        
         
         <div className="flex flex-col justify-center items-center">
           <p className="text-xl my-1 font-bold">sign up to stay updated</p>
