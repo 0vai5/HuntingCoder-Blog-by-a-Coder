@@ -3,7 +3,9 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 
 const Nav = () => {
+  
   return (
+
     <>
       <div className="h-10 py-10 px-16 flex justify-between flex-col items-center">
         <ul className="font-semibold text-2xl mx-10 flex items-center justify-between gap-10">

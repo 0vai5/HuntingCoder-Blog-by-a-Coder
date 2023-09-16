@@ -63,6 +63,14 @@ app.post("/Login", async (req, res) => {
   }
 });
 
+app.get('/profile', (req,res) => {
+  const {tokenED} = req.cookies;
+  jwt.verify(tokenED, secretKey, {}, (err,info) => {
+    if (err) throw err;
+    res.json(info);
+  });
+});
+
 app.listen(4000, () => {
   console.log("Server is running on port 4000");
 });
