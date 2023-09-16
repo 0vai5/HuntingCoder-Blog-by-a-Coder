@@ -1,35 +1,19 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Link from "next/link";
 
 const Nav = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
-
-  const checkLoginStatus = async () => {
-    try {
-      console.log("Checking login status...");
-      const response = await fetch("http://localhost:4000/checkLoginStatus", {
-        method: "GET",
-        credentials: "include",
-      });
-  
-      if (response.ok) {
-        console.log("User is logged in");
-        setIsLoggedIn(true);
-      }
-    } catch (error) {
-      console.error("Error checking login status:", error);
-    }
-  };
-  console.log(setIsLoggedIn)
-  
-
-
+  const {setUserInfo,userInfo} = useContext(UserContext);
   useEffect(() => {
-    checkLoginStatus();
+    fetch('http://localhost:4000/profile', {
+      credentials: 'include',
+    }).then(response => {
+      response.json().then(userInfo => {
+        setUserInfo(userInfo);
+      });
+    });
   }, []);
-  console.log(checkLoginStatus)
-
+  
   return (
     <>
       <div className="h-10 py-10 px-16 flex justify-between flex-col items-center">
@@ -45,7 +29,7 @@ const Nav = () => {
           </Link>
         </ul>
         <div>
-          {isLoggedIn ? (
+          
             <>
               <button className="hover:bg-gray-700 bg-black text-white rounded-md px-5 py-2 mx-2">
                 Publish Blog
@@ -55,7 +39,7 @@ const Nav = () => {
                 Logout
               </button>
             </>
-          ) : (
+          
             <>
               <Link href={"/Login"}>
                 <button className="hover:bg-gray-700 bg-black text-white rounded-md px-5 py-2 mx-2">
@@ -69,7 +53,7 @@ const Nav = () => {
                 </button>
               </Link>
             </>
-          )}
+        
         </div>
       </div>
     </>

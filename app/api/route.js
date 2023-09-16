@@ -9,10 +9,12 @@ const cookieParser = require("cookie-parser");
 
 const saltRounds = 10;
 const secretKey = "asdfe45we45w345wegw345werjktjwertkj";
-app.use(cors({
-  origin: "http://localhost:3000", // Replace with the actual URL of your frontend application
-  credentials: true, // Allow cookies and other credentials to be included
-}));
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Replace with the actual URL of your frontend application
+    credentials: true, // Allow cookies and other credentials to be included
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
@@ -20,51 +22,11 @@ mongoose.connect(
   "mongodb+srv://rovais53:mba21345@cluster0.kshqwu8.mongodb.net/your-database-name"
 );
 
-const generateToken = (userId) => {
-  return jwt.sign({ userId }, secretKey, {});
-};
-
-
-const authenticateUser = (req, res, next) => {
-  const token = req.cookies.jwt;
-  if (token) {
-    jwt.verify(token, secretKey, (err, decoded) => {
-      if (err) {
-        // Invalid token
-        res.clearCookie("jwt"); // Clear the cookie
-        return next();
-      }
-      // Token is valid, you can also set user information in req.locals if needed
-      return next();
-    });
-  } else {
-    next(); // No token found, continue to the next middleware or route
-  }
-};
-
-app.use(authenticateUser); 
-
-app.get("/checkLoginStatus", authenticateUser, (req, res) => {
-  // If the middleware passed, it means the user is authenticated
-  res.sendStatus(200);
-});
-
-
-
-
 // Logout route
 // app.post("/Logout", (req, res) => {
 //   res.clearCookie("jwt"); // Clear the JWT cookie to log the user out
 //   res.json({ message: "Logged out successfully" });
 // });
-
-
-
-
-
-
-
-
 
 app.post("/Register", async (req, res) => {
   const { Email, Password } = req.body;
@@ -83,22 +45,29 @@ app.post("/Register", async (req, res) => {
 
 app.post("/Login", async (req, res) => {
   const { Email, Password } = req.body;
+
   try {
     const user = await User.findOne({ Email });
 
     if (!user) {
-      res.status(401).json({ error: "User not found" });
-      return;
+      return res.status(400).json({ error: "User not found" });
     }
 
     const passwordMatch = await bcrypt.compare(Password, user.Password);
 
     if (passwordMatch) {
-      const token = generateToken(user._id);
-      res.cookie("jwt", token).json({
-        id: user._id,
-        message: "Login successful",
-      });
+      const token = jwt.sign({ userId: user._id }, secretKey, {});
+
+      res
+        .cookie("jwt", token, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "None",
+        })
+        .json({
+          id: user._id,
+          message: "Login successful",
+        });
     } else {
       res.status(401).json({ error: "Authentication failed" });
     }
@@ -108,13 +77,12 @@ app.post("/Login", async (req, res) => {
   }
 });
 
+app.get("/Profile", (req, res) => {
+  const { token } = req.cookies;
 
-
-
+  res.json();
+});
 
 app.listen(4000, () => {
   console.log("Server is running on port 4000");
 });
-
-
-
