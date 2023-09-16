@@ -19,6 +19,8 @@ const page = () => {
               body: JSON.stringify({ Email, Password }),
               headers: { "Content-Type": "application/json" },
             });
+            setEmail("");
+            setPassword("");
           }}
         >
           <label className="relative right-28 font-semibold text-lg">
@@ -28,7 +30,8 @@ const page = () => {
           <input
             type="text"
             placeholder="enter email"
-            className="roudned-md px-5 py-3 border-4 w-72 border-zinc-950 text-xl"
+            className="roudned-md px-5 py-3 border-4 w-72 border-zinc-950 text-xl a"
+            autoComplete="off"
             value={Email}
             onChange={(e) => {
               setEmail(e.target.value);
@@ -42,6 +45,7 @@ const page = () => {
           <input
             type="password"
             placeholder="enter Password"
+            autoComplete="off"
             className="roudned-md px-5 py-3 border-4 w-72 border-zinc-950 text-xl"
             value={Password}
             onChange={(e) => {
