@@ -5,6 +5,7 @@ import Link from "next/link";
 const page = () => {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
+  
   return (
     <>
       <div className="container text-center left-4 relative ">
