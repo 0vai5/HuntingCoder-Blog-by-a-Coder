@@ -14,6 +14,7 @@ const Page = () => {
         method: "POST",
         body: JSON.stringify({ Email, Password }),
         headers: { "Content-Type": "application/json" },
+        credentials: 'include',
       });
       setEmail("");
       setPassword("");
