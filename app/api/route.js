@@ -2,10 +2,14 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const User = require("./models/User");
+const post = require("./models/post");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const multer = require('multer');
+const uploadMiddleware = multer({ dest: 'uploads/' });
+const fs = require('fs');
 
 const saltRounds = 10;
 const secretKey = "asdfe45we45w345wegw345werjktjwertkj";
@@ -86,6 +90,23 @@ app.get("/Profile", (req, res) => {
 app.post("/Logout", (req, res) => {
     res.cookie('token', "").json('ok')
   });
+
+app.post("/Post",uploadMiddleware.single('files'), async (req,res)=>{
+  const {originalname,path} = req.file;
+  const parts = originalname.split('.');
+  const ext = parts[parts.length - 1];
+  const newPath = path+'.'+ext;
+  fs.renameSync(path, newPath);
+
+  const {title,summary,content} = req.body
+  const postDoc = await post.create({
+    title,
+    summary,
+    content,
+    cover:newPath,
+  })
+  res.json(postDoc)
+})
 
 app.listen(4000, () => {
   console.log("Server is running on port 4000");
