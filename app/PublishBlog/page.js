@@ -8,6 +8,7 @@ const Page = () => {
   const [summary, setsummary] = useState("");
   const [content, setcontent] = useState("");
   const [files, setfiles] = useState("");
+  const [PostSuccess, setPostSuccess] = useState(false);
   const modules = {
     toolbar: [
       [{ header: [1, 2, false] }],
@@ -34,10 +35,30 @@ const Page = () => {
       method: "POST",
       body: data,
     });
-    console.log(await response.json());
+    if (PostSuccess) {
+      setcontent("")
+      setsummary("")
+      settitle("")
+      setfiles("")
+      console.log('Redirecting...');
+      window.location.replace("/");
+    }
+    
+       
+    else {
+      // Handle authentication failure here
+      console.log("Login failed");
+    }
+    // console.log(await response.json());
   };
 
   return (
+    <>
+    {PostSuccess ? (
+      
+      window.location.replace("/")
+
+    ) : (
     <form
       onSubmit={submitHandler}
       className="text-center flex items justify-center items-center flex-col mt-14"
@@ -84,6 +105,8 @@ const Page = () => {
         Publish blog
       </button>
     </form>
+    )}
+    </>
   );
 };
 

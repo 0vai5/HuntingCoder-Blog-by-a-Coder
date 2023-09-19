@@ -75,38 +75,54 @@ app.post("/Login", async (req, res) => {
   }
 });
 
-app.get("/Profile", (req, res) => {
-  const { token } = req.cookies;
-  jwt.verify(token, secretKey, {}, (err,info)=>{
-    if (err) {
-      throw err;
-    }
-    else{
-      res.json(info)
-    }
-  })
-});
 
 app.post("/Logout", (req, res) => {
     res.cookie('token', "").json('ok')
   });
 
-app.post("/Post",uploadMiddleware.single('files'), async (req,res)=>{
-  const {originalname,path} = req.file;
-  const parts = originalname.split('.');
-  const ext = parts[parts.length - 1];
-  const newPath = path+'.'+ext;
-  fs.renameSync(path, newPath);
+// ... Other imports and configurations
 
-  const {title,summary,content} = req.body
-  const postDoc = await post.create({
-    title,
-    summary,
-    content,
-    cover:newPath,
-  })
-  res.json(postDoc)
-})
+// Update the CORS configuration
+app.use(cors({ origin: "*", credentials: true }));
+
+// ... Database connection and other middleware
+
+app.get("/Profile", (req, res) => {
+  const { token } = req.cookies;
+  jwt.verify(token, secretKey, (err, info) => {
+    if (err) {
+      res.status(401).json({ error: "Invalid token" });
+    } else {
+      res.json(info);
+    }
+  });
+});
+
+app.post("/Post", uploadMiddleware.single('files'), async (req, res) => {
+  try {
+    const { originalname, path } = req.file;
+    const parts = originalname.split('.');
+    const ext = parts[parts.length - 1];
+    const newPath = path + '.' + ext;
+    fs.renameSync(path, newPath);
+
+    const { title, summary, content } = req.body;
+    const postDoc = await post.create({
+      title,
+      summary,
+      content,
+      cover: newPath,
+    });
+    res.json(postDoc);
+  } catch (error) {
+    console.error("Error creating post:", error);
+    res.status(500).json({ error: "Error creating post" });
+  }
+});
+
+// ... Rest of the routes and server setup
+
+
 
 app.listen(4000, () => {
   console.log("Server is running on port 4000");

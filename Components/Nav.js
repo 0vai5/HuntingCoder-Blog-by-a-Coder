@@ -6,7 +6,7 @@ import Link from "next/link";
 const Nav = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
-    fetch("http://localhost:4000/profile", {
+    fetch("http://localhost:4000/Profile", {
       credentials: "include",
     }).then((response) => {
       response.json().then((userInfo) => {
