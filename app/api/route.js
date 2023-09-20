@@ -7,9 +7,9 @@ const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
-const multer = require('multer');
-const uploadMiddleware = multer({ dest: 'uploads/' });
-const fs = require('fs');
+const multer = require("multer");
+const uploadMiddleware = multer({ dest: "uploads/" });
+const fs = require("fs");
 
 const saltRounds = 10;
 const secretKey = "asdfe45we45w345wegw345werjktjwertkj";
@@ -23,17 +23,14 @@ app.use(
 
 app.use(express.json());
 app.use(cookieParser());
+app.use('/uploads', express.static(__dirname + '/uploads'));
 
 mongoose.connect(
   "mongodb+srv://rovais53:mba21345@cluster0.kshqwu8.mongodb.net/your-database-name", // Replace 'your-database-name' with the actual database name
   { useNewUrlParser: true, useUnifiedTopology: true }
 );
 
-// Logout route (if needed)
-// app.post("/Logout", (req, res) => {
-//   res.clearCookie("token"); // Clear the JWT cookie to log the user out
-//   res.json({ message: "Logged out successfully" });
-// });
+
 
 app.post("/Register", async (req, res) => {
   const { Email, Password } = req.body;
@@ -77,15 +74,9 @@ app.post("/Login", async (req, res) => {
 
 
 app.post("/Logout", (req, res) => {
-    res.cookie('token', "").json('ok')
-  });
-
-// ... Other imports and configurations
-
-// Update the CORS configuration
-app.use(cors({ origin: "*", credentials: true }));
-
-// ... Database connection and other middleware
+  res.clearCookie("token"); // Clear the JWT cookie to log the user out
+  res.json({ message: "Logged out successfully" });
+});
 
 app.get("/Profile", (req, res) => {
   const { token } = req.cookies;
@@ -98,12 +89,16 @@ app.get("/Profile", (req, res) => {
   });
 });
 
-app.post("/Post", uploadMiddleware.single('files'), async (req, res) => {
+app.post("/Post", uploadMiddleware.single("files"), async (req, res) => {
   try {
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+
     const { originalname, path } = req.file;
-    const parts = originalname.split('.');
+    const parts = originalname.split(".");
     const ext = parts[parts.length - 1];
-    const newPath = path + '.' + ext;
+    const newPath = path + "." + ext;
     fs.renameSync(path, newPath);
 
     const { title, summary, content } = req.body;
@@ -120,9 +115,10 @@ app.post("/Post", uploadMiddleware.single('files'), async (req, res) => {
   }
 });
 
-// ... Rest of the routes and server setup
-
-
+app.get("/Post", async (req, res) => {
+  res.json(await post.find()
+  .limit(20));
+});
 
 app.listen(4000, () => {
   console.log("Server is running on port 4000");

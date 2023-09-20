@@ -55,9 +55,7 @@ const Page = () => {
   return (
     <>
     {PostSuccess ? (
-      
-      window.location.replace("/")
-
+      window.location.replace("/Blogs")
     ) : (
     <form
       onSubmit={submitHandler}
