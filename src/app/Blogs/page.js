@@ -1,27 +1,9 @@
-'use client'
-import React, { useEffect, useState } from "react";
-import Blog from "@/Components/Blog";
+import react from 'react';
 
-const page = () => {
- 
-  const [posts, setposts] = useState([])
-  useEffect(() => {
-    fetch('http://localhost:4000/Post').then(response=>{
-      response.json().then(posts =>{
-        setposts(posts)
-      })
-    })
-  }, [])
-  
+const Page = () => {
   return (
-    <>
-    <div className="my-10 h-10"></div>
-      {posts.length > 0 && posts.map(post =>(
-        <Blog {...post}/>
-      ))
-      }
-    </>
+    <h1>Hello World</h1>
   );
 };
 
-export default page;
+export default Page;
